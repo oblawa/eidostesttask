@@ -1,0 +1,81 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AvaloniaEidos.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:AvaloniaEidos.Views"
+		xmlns:local="clr-namespace:AvaloniaEidos.Scripts"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+        x:Class="AvaloniaEidos.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="AvaloniaEidos">
+
+	<Window.Resources>
+		<local:TypeToColorConverter x:Key="TypeToColorConverter"/>
+		
+	</Window.Resources>
+
+	<Design.DataContext>		 
+		<vm:MainViewModel />
+	</Design.DataContext>
+	
+	<Grid Width="800" Height="600">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="400"/>
+			<RowDefinition Height="50"/>
+			<RowDefinition Height="150"/>
+		</Grid.RowDefinitions>
+		<StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
+			
+			<ListBox ItemsSource="{Binding ProgressBars}">
+				<ListBox.ItemTemplate>
+					<DataTemplate>						
+						<ProgressBar ShowProgressText="True" Width="750" Height="50" Margin="25" Value="{Binding Value}">
+							<ProgressBar.Foreground>
+								<Binding Path="Tag" Converter="{StaticResource TypeToColorConverter}"/>
+							</ProgressBar.Foreground>
+						</ProgressBar>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+
+		</StackPanel>
+		<Grid Grid.Row="1" >
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Button Content="Добавить задачу A" Command="{Binding AddTaskCommand}" CommandParameter="A" Grid.Column="0" Width="300" Height="40" Margin="25" HorizontalAlignment="Left"/>
+			<Button Content="Добавить задачу B" Command="{Binding AddTaskCommand}" CommandParameter="B" Grid.Column="1" Width="300" Height="40" Margin="25" HorizontalAlignment="Right"/>
+		</Grid>
+		<Grid Grid.Row="2" >
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding LogText}" Height="95" Width="300" HorizontalAlignment="Left" Margin="25"/>
+			<StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="25">
+				<Button Content="Тип A" Width="115" Height="40" VerticalAlignment="Top" Margin="25,25,25,0"/>
+				<Button Content="Тип B" Width="115" Height="40" VerticalAlignment="Bottom" Margin="25,25,25,25"/>
+			</StackPanel>
+			<Grid Grid.Column="2">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<Button Grid.Row="0" Content="Удалить все" Width="300" Height="40"/>
+				<Grid Grid.Row="1">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+					<Button Grid.Column="0" Content="Остановить все" Command="{Binding StopAllTasksCommand}"/>
+					<Button	Grid.Column="1" Content="Запустить все" Command="{Binding ContinueAllTasksCommand}"/>
+				</Grid>
+			</Grid>
+		</Grid>
+
+	</Grid>
+</Window>
